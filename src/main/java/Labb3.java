@@ -21,15 +21,15 @@ public class Labb3 {
                     System.out.println("Exiting program");
                     break loop;
                 }
-                case 1 -> selectQueries(); // Gör om sök funktionen till sitt egna val för att kunna använda preparedStatement
-                case 2 -> insertQueries(); // Done
+                case 1 -> selectQueries();
+                case 2 -> insertQueries();
                 case 3 -> updateQueries();
                 case 4 -> deleteQueries();
-                case 5 -> printActions(); // Done
+                case 5 -> printActions();
                 case 6 -> favouriteGame();
                 case 7 -> removeFavouriteFromGame();
                 case 8 -> showNrOfGamesInDB();
-                case 9 -> /*Todo search for game with preparedstatements*/searchForGame();
+                case 9 -> searchForGame();
             }
         } while (true);
     }
