@@ -393,7 +393,7 @@ public class Labb3 {
     }
 
     private static Connection connect() {
-        String url = "jdbc:sqlite:/Users/emilw/Desktop/DATABAS KURS/Laboration 3/Labb3.db";
+        String url = "jdbc:sqlite:/Users/emilw/Desktop/DATABAS KURS/Laboration 3/Labb3 - JU2023 Emil Winther.db";
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url);
