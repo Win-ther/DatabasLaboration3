@@ -306,7 +306,7 @@ public class Labb3 {
     }
 
     private static void selectQueries() {
-        String sql = null;
+        String sql;
         System.out.println("""
                 1. Show all games
                 2. Show all reviews
@@ -319,7 +319,9 @@ public class Labb3 {
             printActions();
             return;
         }
-        sql = getSelectSqlQuery(choice, sql);
+        sql = getSelectSqlQuery(choice);
+        if (sql == null)
+            return;
         try (Connection connection = connect()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -336,16 +338,24 @@ public class Labb3 {
         }
     }
 
-    private static String getSelectSqlQuery(int choice, String sql) {
+    private static String getSelectSqlQuery(int choice) {
         switch (choice) {
-            case 1 -> sql = "SELECT * FROM game";
-            case 2 -> sql = "SELECT * FROM review";
-            case 3 -> sql = "SELECT game.gameName, game.gameReleaseYear, review.reviewName,review.reviewScore FROM game " +
-                            "INNER JOIN review ON game.gameId = review.reviewGameId";
-            case 4 -> sql = "SELECT game.gameName, game.gameReleaseYear, review.reviewName,review.reviewScore FROM game " +
-                            "LEFT JOIN review ON game.gameId = review.reviewGameId WHERE game.gameFavourite = 1";
+            case 1 -> {
+                return  "SELECT * FROM game";
+            }
+            case 2 -> {
+                return "SELECT * FROM review";
+            }
+            case 3 -> {
+                return "SELECT game.gameName, game.gameReleaseYear, review.reviewName,review.reviewScore FROM game " +
+                                "INNER JOIN review ON game.gameId = review.reviewGameId";
+            }
+            case 4 -> {
+                return "SELECT game.gameName, game.gameReleaseYear, review.reviewName,review.reviewScore FROM game " +
+                                "LEFT JOIN review ON game.gameId = review.reviewGameId WHERE game.gameFavourite = 1";
+            }
         }
-        return sql;
+        return null;
     }
 
     private static void selectGamesAndReviews(ResultSet rs) throws SQLException {
