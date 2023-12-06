@@ -57,7 +57,7 @@ public class Labb3 {
     }
 
     private static void showNrOfGamesInDB() {
-        String sql = "SELECT COUNT(*) as avg FROM game";
+        String sql = "SELECT COUNT(gameId) FROM game";
 
         try (Connection connection = connect()) {
             Statement stmt = connection.createStatement();
@@ -183,8 +183,8 @@ public class Labb3 {
         int score;
         System.out.println("Insert new name for reviewer");
         String name = scanner.nextLine();
+        System.out.println("Insert new score for game");
         try {
-            System.out.println("Insert new score for game");
             score = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
             System.out.println("Incorrect input, going back to main menu");
@@ -252,10 +252,10 @@ public class Labb3 {
     private static void insertReview() {
         System.out.println("Insert name for reviewer");
         String name = scanner.nextLine();
-        int score = 0;
-        int id = 0;
+        int score;
+        int id;
         try {
-            System.out.println("Insert score for game");
+            System.out.println("Insert score for game(0 - 10)");
             score = Integer.parseInt(scanner.nextLine());
             System.out.println("Insert ID for the game you are creating a review for");
             id = Integer.parseInt(scanner.nextLine());
@@ -283,7 +283,7 @@ public class Labb3 {
         System.out.println("Insert name for game");
         String name = scanner.nextLine();
         System.out.println("Insert release year for game");
-        int releaseYear = 0;
+        int releaseYear;
         try {
             releaseYear = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
@@ -314,9 +314,12 @@ public class Labb3 {
                 4. Show favourites
                 """);
         int choice = getChoice();
-        if (choice == 0)
+        if (choice <= 0 ||choice >=5) {
+            System.out.println("Incorrect input, returning to menu");
+            printActions();
             return;
-        sql = getSqlQuery(choice, sql);
+        }
+        sql = getSelectSqlQuery(choice, sql);
         try (Connection connection = connect()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -333,7 +336,7 @@ public class Labb3 {
         }
     }
 
-    private static String getSqlQuery(int choice, String sql) {
+    private static String getSelectSqlQuery(int choice, String sql) {
         switch (choice) {
             case 1 -> sql = "SELECT * FROM game";
             case 2 -> sql = "SELECT * FROM review";
@@ -380,7 +383,7 @@ public class Labb3 {
     }
 
     private static Connection connect() {
-        String url = "jdbc:sqlite:/Users/emilw/DataGripProjects/SQLiteLaboration3/Labb3.db";
+        String url = "jdbc:sqlite:/Users/emilw/Desktop/DATABAS KURS/Laboration 3/Labb3.db";
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url);
